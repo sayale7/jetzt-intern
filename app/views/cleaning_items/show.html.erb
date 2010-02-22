@@ -1,0 +1,64 @@
+<div style="float:left; padding:10px;">
+    <p>
+        <b><%=h @cleaning_item.title %></b>
+    </p>
+    <br/>
+    <p>
+        <%= simple_format @cleaning_item.description %>
+    </p>
+    <br/>
+    <p>
+        <b>Zähler: </b>
+        <%=h @cleaning_item.counter %>
+    </p>
+    <p>
+        <b>Intervall: </b>
+        <%=h @cleaning_item.intervall %>
+    </p>
+    <% form_for(@finished_clean, :url => {:controller => 'finished_cleans', :action => 'create' }) do |f| %>
+    <%= f.error_messages %>
+    <%= f.hidden_field :cleaning_item_id, :value => @cleaning_item.id %>
+    <%= f.hidden_field :title, :value => @cleaning_item.title %>
+    <%= f.hidden_field :when_finished, :value => Time.now %>
+    <% if flash[:error] %>
+    <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :id => "flash_#{name}" %>
+    <% end %>
+    <% end %>
+    <p>
+        <b>Jetzt von </b>
+        <%= f.select(:user_id, User.all.collect {|u| [ u.username, u.id ] }, { :include_blank => true }) %>
+        <%= f.submit 'Erledigt', :confirm => "Eintrag als erledigt markieren?" %>
+    </p>
+    <% end %>
+</div>
+<div style="float:left; clear:both; padding-right:20px;">
+    <h1>Zuletzt gereinigt:</h1>
+    <table>
+        <tr>
+            <th>
+                Wer?
+            </th>
+            <th>
+                Wann?
+            </th>
+        </tr>
+        <% @finished_clean_items.each do |finished_clean| %>
+        <tr>
+            <td>
+                <% user_name = User.find(finished_clean.user_id) %>
+                <%= user_name.username %>
+            </td>
+            <td>
+                <%=h finished_clean.when_finished.strftime("%d. %m. %Y um %H:%M Uhr") %>
+            </td>
+        </tr>
+        <% end %>
+    </table>
+</div>
+<div style="clear:both; padding:10px;">
+    <br/>
+    <%= link_to 'Zurück zur Liste', cleaning_items_path %>
+    <% if current_user and current_user.has_role? :admin %>|<%= link_to 'Bearbeiten', edit_cleaning_item_path(@cleaning_item) %>| <%= link_to 'Löschen', @cleaning_item, :confirm => 'Are you sure?', :method => :delete %>
+    <% end %>
+</div>

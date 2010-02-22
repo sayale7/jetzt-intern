@@ -1,0 +1,10 @@
+<% if @neu %>
+<li style=" border:thin solid #000;  margin-bottom:10px; list-style-type:none; padding:5px; background:#ff9007; text-align:inherit; overflow:hidden;">
+   <a style="color:#fff;" href="/posts?search=post<%= @posts.last.id %>"><%='Eintrag erstellt!'%></a>
+</li>
+<% end %>
+<% if @changed %>
+<li style=" border:thin solid #000;  margin-bottom:10px; list-style-type:none; padding:5px; background:#ff9007; text-align:inherit; overflow:hidden;">
+   <a style="color:#fff;" href="/posts?search=post<%= @posts_updated.last.id %>"><%='Eintrag geändert!'%></a>
+</li>
+<% end %>

@@ -1,0 +1,62 @@
+
+<div id="mailbox_list">
+    <%= render :partial => "layouts/mailbox_container" %>
+    <div id="mailbox_trash">
+        <%= render :partial => "layouts/trash_container" %>
+    </div>
+</div>
+<div id="inbox">
+    <table>
+    	<tr>
+        <th colspan="5">
+        	<h1>Gestendete</h1>
+        </th>
+    </tr>
+        <tr>
+            <th>
+            </th>
+            <th>
+                An
+            </th>
+            <th>
+                Betreff
+            </th>
+            <th>
+                Gesendet am
+            </th>
+			<th></th>
+        </tr>
+        <% for message in @messages %>
+        <tr>
+            <td>
+                <%= link_to image_tag("email.jpg", :border=>0), sent_path(message) %>
+            </td>
+            <td>
+                <% Recipient.find_all_by_message_id(message.id).each do |recipient| %>
+                <% users = User.find_all_by_id(recipient.user_id) %>
+                <% if !users.empty? %>
+                <%= User.find(recipient.user_id).username %>
+                <br/>
+                <% else %>
+                <p>
+                    gelöscht
+                </p>
+                <% end %>
+                <% end %>
+            </td>
+            <td>
+                <%= message.subject %>
+            </td>
+            <td>
+                <%= message.created_at.strftime("%d. %m. %Y um %H:%M Uhr") %>
+            </td>
+            <% unless message.deleted %>
+            <td>
+                <%= link_to image_tag("trash_klein.jpg", :border=>0), :controller => "messages", :action => "html_destroy_sent", :id => message.id %>
+            </td>
+			<% end %>
+        </tr>
+        <% end %>
+    </table>
+    <%= will_paginate @messages %>
+</div>

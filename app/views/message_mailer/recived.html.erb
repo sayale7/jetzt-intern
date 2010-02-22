@@ -1,0 +1,7 @@
+<p>
+    Neue Nachricht von <%= User.find(@message.author_id).username %>mit dem Betreff " <%= @message.subject %>"  erhalten.
+</p>
+<%= simple_format(@message.body) %>
+<p>
+    Klicke auf den Link um die Nachricht anzuschauen. http://dasjetzt.kohler-it.net
+</p>

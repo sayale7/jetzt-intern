@@ -1,0 +1,81 @@
+<% unless @root_page.nil? %>
+<% if !@root_page.children.empty? %>
+<% unless @page.nil? %>
+<% for page in @page.ancestors.reverse %>
+<% if (page.parent == nil) %>
+<ul style=" border:thin solid #000; padding:5px; margin-bottom:10px; list-style-type:none; background:#deffd5; text-align:inherit; overflow:hidden;">
+    <li>
+        <%= h(page.name) %>
+    </li>
+</ul>
+<% end %>
+<% end %>
+<% end %>
+<div id="sub_menu">
+    <ul id="submenu">
+        <% sub_pages_1 = Page.find_all_by_parent_id(@root_page.id, :order => "updated_at DESC") %>
+        <% sub_pages_1.each do |sub_page_1| %>
+        <li>
+            <%= link_to_unless_current("#{sub_page_1.name}", sub_page_1) do
+            label_tag(sub_page_1.name)
+            end %>
+        </li>
+        <ul id="submenu">
+            <% sub_pages_2 = Page.find_all_by_parent_id(sub_page_1.id, :order => "updated_at DESC") %>
+            <% sub_pages_2.each do |sub_page_2| %>
+            <li>
+                <%= link_to_unless_current("#{sub_page_2.name}", sub_page_2) do
+                label_tag(sub_page_2.name)
+                end %>
+            </li>
+            <ul id="submenu">
+                <% sub_pages_3 = Page.find_all_by_parent_id(sub_page_2.id, :order => "updated_at DESC") %>
+                <% sub_pages_3.each do |sub_page_3| %>
+                <li>
+                    <%= link_to_unless_current("#{sub_page_3.name}", sub_page_3) do
+                    label_tag(sub_page_3.name)
+                    end %>
+                </li>
+                <% end %>
+            </ul>
+            <% end %>
+        </ul>
+        <% end %>
+    </ul>
+</div>
+<% else %>
+<div id="sidebar">
+    <h1>Top Sites</h1>
+    <ul>
+        <% pages = Page.all(:conditions => ("inactive = false"), :order => "updated_at DESC", :limit => 5) %>
+        <% pages.each do |page| %>
+        <li>
+            <%= link_to_unless_current(page.name, :controller => "pages", :action => "show", :id => page.id) do
+            label_tag(page.name)
+            end %>
+            <p style=" text-align:center; font-size:smaller;">
+                <%= page.updated_at.strftime("%d.%m.%Y, %H:%M") %>
+            </p>
+        </li>
+        <% end %>
+    </ul>
+</div>
+<% end %>
+<% else %>
+<div id="sidebar">
+    <h1>Top Sites</h1>
+    <ul>
+        <% pages = Page.all(:conditions => ("inactive = false"), :order => "updated_at DESC", :limit => 5) %>
+        <% pages.each do |page| %>
+        <li>
+            <%= link_to_unless_current(page.name, :controller => "pages", :action => "show", :id => page.id) do
+            label_tag(page.name)
+            end %>
+            <p style=" text-align:center; font-size:smaller;">
+                <%= page.updated_at.strftime("%d.%m.%Y, %H:%M") %>
+            </p>
+        </li>
+        <% end %>
+    </ul>
+</div>
+<% end %>

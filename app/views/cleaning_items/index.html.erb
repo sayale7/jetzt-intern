@@ -1,0 +1,43 @@
+<h1>Reinigungsliste</h1>
+<table>
+    <tr>
+        <th>
+        </th>
+        <th>
+            fällig in
+        </th>
+        <th  style="width:600px;">
+            Titel
+        </th>
+    </tr>
+    <% @cleaning_items.each do |cleaning_item| %>
+    <tr>
+        <% if cleaning_item.counter <= 0 %>
+        <td style="background:red; width:20px;">
+        </td>
+        <% end %>
+        <% if (cleaning_item.counter <= (cleaning_item.intervall * 0.1)) && (cleaning_item.counter > 0) %>
+        <td style="background:yellow; width:20px;">
+        </td>
+        <% end %>
+        <% if cleaning_item.counter > (cleaning_item.intervall * 0.1) %>
+        <td style="background:green; width:20px;">
+        </td>
+        <% end %>
+        <td>
+            <%=h cleaning_item.counter %>
+        </td>
+        <td>
+            <%=link_to cleaning_item.title, cleaning_item %>
+        </td>
+    </tr>
+    <% end %>
+</table>
+<% if current_user.username == "thomas" %>
+<%= link_to 'Eins Rauf', :controller => "cleaning_items", :action => "count_up", :id => 1 %>
+<%= link_to 'Eins Runter', :controller => "cleaning_items", :action => "count_down", :id => 1 %>
+<% end %>
+<br/>
+<% if current_user and current_user.has_role? :admin %>
+<%= link_to 'Neuer Eintrag', new_cleaning_item_path %>
+<% end %>

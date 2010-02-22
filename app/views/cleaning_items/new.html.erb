@@ -1,0 +1,31 @@
+<h1>Reinigungsliten Eintrag erstellen</h1>
+
+<% form_for(@cleaning_item) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label 'Titel' %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label 'Beschreibung' %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label 'Zähler' %><br />
+    <%= f.text_field :counter %>
+  </p>
+  <p>
+    <%= f.label 'Intervall' %><br />
+    <%= f.text_field :intervall %>
+  </p>
+  <p>
+    <%= f.label 'Aktiv?' %><br />
+    <%= f.check_box :active %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+<br/>
+<%= link_to 'Zurück', cleaning_items_path %>

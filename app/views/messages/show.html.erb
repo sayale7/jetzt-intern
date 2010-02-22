@@ -1,0 +1,195 @@
+<% content_for :head do %>
+<%= javascript_include_tag 'jquery-1.3.2', 'jquery.tokeninput' %>
+<% end %>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tokenize2").tokenInput("/all_users", {
+            prePopulate: [{
+                "id": "<%= @user.id %>",
+                "name": "<%= @user.username  %>"
+            }],
+            classes: {
+                tokenList: "token-input-list-facebook",
+                token: "token-input-token-facebook",
+                tokenDelete: "token-input-delete-token-facebook",
+                selectedToken: "token-input-selected-token-facebook",
+                highlightedToken: "token-input-highlighted-token-facebook",
+                dropdown: "token-input-dropdown-facebook",
+                dropdownItem: "token-input-dropdown-item-facebook",
+                dropdownItem2: "token-input-dropdown-item2-facebook",
+                selectedDropdownItem: "token-input-selected-dropdown-item-facebook",
+                inputToken: "token-input-input-token-facebook"
+            }
+        });
+    });
+</script>
+<div id="popupContact" style="display: none; position: fixed; position: absolute; background: #333; border: 2px solid #cecece; z-index: 2; padding: 12px; font-size: 13px; width:850px;">
+    <div id="mail_for_user" style="float:left; width:490px;">
+        <%= error_messages_for :message %>
+        <% form_for :message, :url => {:controller => "sent", :action => "create"} do |f| %>
+        <table>
+            <tr>
+                <td class="full">
+                    Empfänger
+                </td>
+                <td class="full">
+                    <input type="text" id="tokenize2" name="blah2" />
+                </td>
+            </tr>
+            <tr>
+                <td class="full">
+                    Betreff
+                </td>
+                <td class="full" id="auto_comp">
+                    <%= f.text_field :subject, :size => 56, :value => "" %>
+                </td>
+            </tr>
+            <tr>
+                <td class="full">
+                    Nachricht
+                </td>
+                <td class="full">
+                    <%= f.text_area :body, :cols => 48, :value => "" %>
+                </td>
+            </tr>
+            <tr>
+                <td class="full">
+                </td>
+                <td class="full">
+                    <%= submit_tag "Send" %>
+                    <button type="button" id="popupContactClose">
+                        Abbrechen
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <% end %>
+    </div>
+    <div id="inbox" style="float:right; width:250px; background:#fff; padding:15px; overflow:auto; position:fixed; position:absolute; right:15px; height:420px;">
+		<h1>Original Nachricht!</h1>
+		<br/>
+        <p style="overflow:hidden;">
+            <%= "<strong>Betreff: </strong>" + @message_to_show.subject %>
+        </p>
+        <% if @message_to_show.author != nil %>
+        <p>
+            <%= "<strong>Von: </strong>" + @message_to_show.author.username %>
+        </p>
+        <% else %>
+        <p>
+            gelöscht
+        </p>
+        <% end %>
+        <p>
+            <%= "<strong>Am: </strong>" + @message_to_show.created_at.strftime("%d.%m.%Y um %H:%M Uhr") %>
+        </p>
+        <br/>
+        <p>
+            <%= simple_format(@message_to_show.body) %>
+        </p>
+    </div>
+</div>
+<script type="text/javascript">
+    //SETTING UP OUR POPUP
+    //0 means disabled; 1 means enabled;
+    var popupStatus = 0;
+    //loading popup with jQuery magic!
+    function loadPopup(){
+        //loads popup only if it is disabled
+        if (popupStatus == 0) {
+            $("#backgroundPopup").css({
+                "opacity": "0.9"
+            });
+            $("#backgroundPopup").fadeIn("fast");
+            $("#popupContact").fadeIn("fast");
+            
+            popupStatus = 1;
+        }
+    }
+    
+    //disabling popup with jQuery magic!
+    function disablePopup(){
+        //disables popup only if it is enabled
+        if (popupStatus == 1) {
+            $("#backgroundPopup").fadeOut("fast");
+            $("#popupContact").fadeOut("fast");
+            popupStatus = 0;
+        }
+    }
+    
+    //centering popup
+    function centerPopup(){
+        //request data for centering
+        var windowWidth = document.documentElement.clientWidth;
+        var windowHeight = document.documentElement.clientHeight;
+        var popupHeight = $("#popupContact").height();
+        var popupWidth = $("#popupContact").width();
+        //centering
+        $("#popupContact").css({
+            "position": "absolute",
+            "top": windowHeight / 2 - popupHeight / 2,
+            "left": windowWidth / 2 - popupWidth / 2
+        });
+        //only need force for IE6
+        
+        $("#backgroundPopup").css({
+            "height": 1000
+        });
+        
+    }
+    
+    //CONTROLLING EVENTS IN jQuery
+    $(document).ready(function(){
+    
+        //LOADING POPUP
+        //Click the button event!
+        $("#button_popup").click(function(){
+            //centering with css
+            centerPopup();
+            //load popup
+            loadPopup();
+        });
+        
+        //CLOSING POPUP
+        //Click the x event!
+        $("#popupContactClose").click(function(){
+            disablePopup();
+        });
+        //Click out event!
+        $("#backgroundPopup").click(function(){
+            disablePopup();
+        });
+        
+    });
+</script>
+<div id="inbox">
+    <p style="overflow:hidden;">
+        <%= "<strong>Betreff: </strong>" + @message_to_show.subject %>
+    </p>
+    <% if @message_to_show.author != nil %>
+    <p>
+        <%= "<strong>Von: </strong>" + @message_to_show.author.username %>
+    </p>
+    <% else %>
+    <p>
+        gelöscht
+    </p>
+    <% end %>
+    <p>
+        <%= "<strong>Am: </strong>" + @message_to_show.created_at.strftime("%d.%m.%Y um %H:%M Uhr") %>
+    </p>
+    <br/>
+    <p>
+        <%= simple_format(@message_to_show.body) %>
+    </p>
+    <br/>
+    <div id="button_popup">
+        <a type="submit"><%= "Antworten" %></a>
+    </div>
+</div>
+<div id="mailbox_list">
+    <%= render :partial => "layouts/mailbox_container" %>
+    <div id="mailbox_trash">
+        <%= render :partial => "layouts/trash_container" %>
+    </div>
+</div>

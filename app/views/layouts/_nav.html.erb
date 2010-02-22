@@ -1,0 +1,41 @@
+<ul id="nav">
+    <% if current_user %>
+    <li>
+        <%= link_to_unless_current( "Home", root_url) do
+			label_tag('Home')
+		end %>
+    </li>
+    <% end %>
+    <% if current_user and current_user.has_role? :admin %>
+    <% pages = Page.find_all_by_parent_id(nil) %>
+    <% pages.each do |page| %>
+    <li>
+        <%= link_to_unless_current(h(page.name), page ) do
+			label_tag(page.name)
+		end %>
+    </li>
+    <% end %>
+    <% end %>
+    <% if current_user and !current_user.has_role? :admin %>
+    <% pages = Page.find_all_by_inactive_and_parent_id(false, nil) %>
+    <% pages.each do |page| %>
+    <li>
+        <%= link_to_unless_current(h(page.name), page)  do
+			label_tag(page.name)
+		end %>
+    </li>
+    <% end %>
+    <% end %>
+    <% if current_user and current_user.has_role? :admin %>
+    <li>
+        <%= link_to_unless_current("New Page", new_page_path)  do
+			label_tag("New Page")
+		end %>
+    </li>
+    <% end %>
+    <% if current_user %>
+    <li>
+        <%= render :partial => "layouts/search" %>
+    </li>
+    <% end %>
+</ul>

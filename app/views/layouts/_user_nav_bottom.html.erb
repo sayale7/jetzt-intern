@@ -1,0 +1,32 @@
+<div id="user_nav_bottom">
+    <% if current_user %>
+    <ul>
+        <% if CleaningItem.find_all_by_active(true, :conditions => ["counter < ?", 1]).size != 0 %>
+        <li>
+            <%= link_to "Reinigungsliste", cleaning_items_path, {:style=>'color:red'} %>
+        </li>
+        <% else %>
+        <li>
+            <%= link_to 'Reinigungsliste', cleaning_items_path, {:style=>'color:green;'} %>
+        </li>
+        <% end %>
+        <% if current_user.has_role? :admin %>
+        <li>
+            <%= link_to 'Gereinigt nach Usern', :controller => 'cleaning_items', :action => 'show_by_person', :id => current_user.id %>
+        </li>
+        <% end %>
+        <li>
+            <%= link_to "Persönlich", mail_login_path, :popup => true %>
+        </li>
+        <li>
+            <%= link_to " Logout", logout_path %>
+        </li>
+    </ul>
+    <% else %>
+    <ul>
+        <li>
+            <%= link_to " Login", login_path %>
+        </li>
+    </ul>
+    <% end %>
+</div>
