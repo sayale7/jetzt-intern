@@ -1,4 +1,4 @@
-set :application, "navigator"
+set :application, "jetzt_intern"
 set :deploy_to, "/var/rails/#{application}"
 #############################################################
 # Settings
@@ -12,7 +12,7 @@ set :use_sudo, true
 #############################################################
 
 set :user, "root"
-set :domain, "92.51.146.57"
+set :domain, "83.169.34.180"
 server domain, :app, :web
 role :db, domain, :primary => true
 set :runner, "root"
@@ -21,11 +21,14 @@ set :runner, "root"
 # GIT
 #############################################################
 
-set :repository,  "svn://kohler-it.net/jetzt/trunk/"
-set :svn_username, "thomas"
-set :svn_password, "aplhma6"
-set :checkout, "export"
+# set :repository,  "svn://kohler-it.net/jetzt/trunk/"
+# set :svn_username, "thomas"
+# set :svn_password, "aplhma6"
+# set :checkout, "export"
 
+set :scm, "git"
+set :repository, "git://github.com:sayale7/jetzt-intern.git"
+set :branch, "master"
 
 after "deploy:symlink", "deploy:update_crontab"
 
