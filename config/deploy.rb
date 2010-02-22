@@ -1,4 +1,4 @@
-set :application, "jetzt_intern"
+set :application, "violounge"
 set :deploy_to, "/var/rails/#{application}"
 #############################################################
 # Settings
@@ -21,13 +21,13 @@ set :runner, "root"
 # GIT
 #############################################################
 
-# set :repository,  "svn://kohler-it.net/jetzt/trunk/"
+# set :repository,  "svn://kohler-it.net/svn/violinet/trunk/"
 # set :svn_username, "thomas"
 # set :svn_password, "aplhma6"
 # set :checkout, "export"
 
 set :scm, "git"
-set :repository, "git://github.com:sayale7/jetzt-intern.git"
+set :repository, "git://github.com/sayale7/jetzt-intern.git"
 set :branch, "master"
 
 after "deploy:symlink", "deploy:update_crontab"
@@ -54,4 +54,3 @@ namespace :deploy do
     task t, :roles => :app do ; end
   end
 end
-
