@@ -30,14 +30,14 @@ set :scm, "git"
 set :repository, "git://github.com/sayale7/jetzt-intern.git"
 set :branch, "master"
 
-after "deploy:symlink" #, "deploy:update_crontab"
+after "deploy:symlink" , "deploy:update_crontab"
 
-# namespace :deploy do
-#   desc "Update the crontab file"
-#   task :update_crontab, :roles => :db do
-#     run "cd #{release_path} && whenever --update-crontab #{application}"
-#   end
-# end
+namespace :deploy do
+  desc "Update the crontab file"
+  task :update_crontab, :roles => :db do
+    #run "cd #{release_path} && whenever --update-crontab #{application}"
+  end
+end
 
 #############################################################
 # Passenger
