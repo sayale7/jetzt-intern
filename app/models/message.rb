@@ -35,6 +35,7 @@ class Message < ActiveRecord::Base
   
   private
   def get_users(touser)
+    #debugger
     @users = User.find_all_by_id(touser)
   end
 end
