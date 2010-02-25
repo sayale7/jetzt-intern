@@ -1,6 +1,6 @@
 <% @users = User.all(:select => "id, username as name", :conditions => "username LIKE '%#{params[:q]}%'")
 @array = Array.new
 for user in @users do
-@array.push("{"+user.to_json.slice(10,user.to_json.length-12)+"},")
+@array.push("{"+user.to_json.slice(9,user.to_json.length-12)+"},")
 end %>
 <%= "["+@array.to_s.slice(0,@array.to_s.length-1)+"]"%>
