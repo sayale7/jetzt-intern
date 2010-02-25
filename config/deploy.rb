@@ -1,4 +1,4 @@
-set :application, "violounge"
+set :application, "jetzt_intern"
 set :deploy_to, "/var/rails/#{application}"
 #############################################################
 # Settings
