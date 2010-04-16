@@ -9,7 +9,7 @@
     <%= f.text_field :name %>
   </p>
 <p>
-	<%= fckeditor_textarea("page", "content", :height => '650')%></p>
+  <%= f.text_area :content, :class => 'mceEditor' %>
 </p>
 
   <p><%= f.submit "Submit" %></p>

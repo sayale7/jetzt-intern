@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= include_tiny_mce_if_needed %>
+<% end %>
+
 <% title "Edit Page" %>
 
 <% form_for @page do |f| %>
@@ -7,7 +11,7 @@
     <%= f.text_field :name %>
   </p>
 <p>
-	<%= fckeditor_textarea("page", "content", :height => '500')%></p>
+	<%= f.text_area :content, :class => 'mceEditor' %>
 </p>
 
   <p><%= f.submit "Submit" %></p>

@@ -36,6 +36,11 @@ body {
     margin-top: 10px;
 }
 
+.mceEditor{
+  width: 650px;
+  height: 400px;
+}
+
 h1 {
     color: #0d523a;
     font-family: Arial, Helvetica, sans-serif;
@@ -263,6 +268,8 @@ label {
 } .pages a, p {
     font-family: Verdana;
     font-size: small;
+    margin:0;
+    padding:0;
 }
 
 /*---STYLES---*/ #extra {

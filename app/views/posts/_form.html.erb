@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= include_tiny_mce_if_needed %>
+<% end %>
+
 <% form_for(@post) do |f| %>
 <%= f.error_messages %>
 <p>
@@ -5,7 +9,7 @@
     <%= f.text_field :title %>
 </p>
 <p>
-    <%= fckeditor_textarea("post", "body", :height => '650') %>
+    <%= f.text_area :body, :class => 'mceEditor' %>
 </p>
 <p>
     <%= f.submit 'Speichern' %>

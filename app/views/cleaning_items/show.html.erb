@@ -46,8 +46,12 @@
         <% @finished_clean_items.each do |finished_clean| %>
         <tr>
             <td>
+              <% unless finished_clean.user.nil? %>
                 <% user_name = User.find(finished_clean.user_id) %>
                 <%= user_name.username %>
+              <% else %>
+                gelöschter User
+              <% end %> 
             </td>
             <td>
                 <%=h finished_clean.when_finished.strftime("%d. %m. %Y um %H:%M Uhr") %>
